@@ -3,7 +3,7 @@
 Plugin Name: MainWP Broken Links Checker Extension
 Plugin URI: https://mainwp.com
 Description: MainWP Broken Links Checker Extension allows you to scan and fix broken links on your child sites. Requires the MainWP Dashboard Plugin.
-Version: 4.0
+Version: 4.0.1
 Author: MainWP
 Author URI: https://mainwp.com
 Documentation URI: https://mainwp.com/help/category/mainwp-extensions/broken-links-checker/
@@ -125,19 +125,19 @@ class MainWP_Links_Checker_Extension_Activator
 	protected $childFile;
 	protected $plugin_handle = 'mainwp-broken-links-checker-extension';
 	protected $product_id = 'MainWP Broken Links Checker Extension';
-	protected $software_version = '4.0';
+        protected $software_version = '4.0.1';
 
 
 	public function __construct() {
 
 		$this->childFile = __FILE__;
 		add_filter( 'mainwp-getextensions', array( &$this, 'get_this_extension' ) );
-		$this->mainwpMainActivated = apply_filters( 'mainwp-activated-check', false );
+                $this->mainwpMainActivated = apply_filters( 'mainwp_activated_check', false );
 
 		if ( $this->mainwpMainActivated !== false ) {
 			$this->activate_this_plugin();
 		} else {
-			add_action( 'mainwp-activated', array( &$this, 'activate_this_plugin' ) );
+                        add_action( 'mainwp_activated', array( &$this, 'activate_this_plugin' ) );
 		}
 		add_action( 'admin_init', array( &$this, 'admin_init' ) );
 		add_action( 'admin_notices', array( &$this, 'mainwp_error_notice' ) );
@@ -182,8 +182,8 @@ class MainWP_Links_Checker_Extension_Activator
 
 
 	function activate_this_plugin() {
-		$this->mainwpMainActivated = apply_filters( 'mainwp-activated-check', $this->mainwpMainActivated );
-		$this->childEnabled = apply_filters( 'mainwp-extension-enabled-check', __FILE__ );
+                $this->mainwpMainActivated = apply_filters( 'mainwp_activated_check', $this->mainwpMainActivated );
+                $this->childEnabled = apply_filters( 'mainwp_extension_enabled_check', __FILE__ );
 		$this->childKey = $this->childEnabled['key'];
 		if ( function_exists( 'mainwp_current_user_can' ) && ! mainwp_current_user_can( 'extension', 'mainwp-broken-links-checker-extension' ) ) {
 			return;

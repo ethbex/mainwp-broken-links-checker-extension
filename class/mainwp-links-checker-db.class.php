@@ -505,6 +505,9 @@ $tbl = 'CREATE TABLE `' . $this->table_name( 'linkschecker_links' ) . '` (
         }
 
         public static function num_rows( $result ) {
+                if ( ! self::is_result( $result ) ) {
+                        return 0;
+                }
                 return mysqli_num_rows( $result );
         }
 

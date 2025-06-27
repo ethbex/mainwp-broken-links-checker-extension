@@ -1320,7 +1320,7 @@ class MainWP_Links_Checker
 		return $filters;
 	}
 
-	function gen_nav_filters( $websites = array(), $filters) {
+        function gen_nav_filters( $websites, $filters = array() ) {
 
 		$current = isset($filters['filter_id']) ? $filters['filter_id'] : 'all';
 

@@ -484,61 +484,33 @@ $tbl = 'CREATE TABLE `' . $this->table_name( 'linkschecker_links' ) . '` (
 		return $result;
 	}
 
-	public static function _query( $query, $link ) {
-		if ( self::use_mysqli() ) {
-			return mysqli_query( $link, $query );
-		} else {
-			return mysql_query( $query, $link );
-		}
-	}
+        public static function _query( $query, $link ) {
+                return mysqli_query( $link, $query );
+        }
 
-	public static function fetch_object( $result ) {
-		if ( self::use_mysqli() ) {
-			return mysqli_fetch_object( $result );
-		} else {
-			return mysql_fetch_object( $result );
-		}
-	}
+        public static function fetch_object( $result ) {
+                return mysqli_fetch_object( $result );
+        }
 
-	public static function free_result( $result ) {
-		if ( self::use_mysqli() ) {
-			return mysqli_free_result( $result );
-		} else {
-			return mysql_free_result( $result );
-		}
-	}
+        public static function free_result( $result ) {
+                return mysqli_free_result( $result );
+        }
 
-	public static function data_seek( $result, $offset ) {
-		if ( self::use_mysqli() ) {
-			return mysqli_data_seek( $result, $offset );
-		} else {
-			return mysql_data_seek( $result, $offset );
-		}
-	}
+        public static function data_seek( $result, $offset ) {
+                return mysqli_data_seek( $result, $offset );
+        }
 
-	public static function fetch_array( $result, $result_type = null ) {
-		if ( self::use_mysqli() ) {
-			return mysqli_fetch_array( $result, (null == $result_type ? MYSQLI_BOTH : $result_type) );
-		} else {
-			return mysql_fetch_array( $result, (null == $result_type ? MYSQL_BOTH : $result_type) );
-		}
-	}
+        public static function fetch_array( $result, $result_type = null ) {
+                return mysqli_fetch_array( $result, ( null == $result_type ? MYSQLI_BOTH : $result_type ) );
+        }
 
-	public static function num_rows( $result ) {
-		if ( self::use_mysqli() ) {
-			return mysqli_num_rows( $result );
-		} else {
-			return mysql_num_rows( $result );
-		}
-	}
+        public static function num_rows( $result ) {
+                return mysqli_num_rows( $result );
+        }
 
-	public static function is_result( $result ) {
-		if ( self::use_mysqli() ) {
-			return ($result instanceof mysqli_result);
-		} else {
-			return is_resource( $result );
-		}
-	}
+        public static function is_result( $result ) {
+                return ( $result instanceof mysqli_result );
+        }
 
 	public function get_results_result( $sql ) {
 		if ( null == $sql ) { return null; }

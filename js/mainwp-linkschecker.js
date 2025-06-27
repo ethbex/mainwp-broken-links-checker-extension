@@ -18,10 +18,11 @@ jQuery( document ).ready(function($) {
 	$( '.mwp-linkschecker-upgrade-noti-dismiss' ).live('click', function() {
 		var parent = $( this ).closest( '.ext-upgrade-noti' );
 		parent.hide();
-		var data = {
-			action: 'mainwp_linkschecker_upgrade_noti_dismiss',
-			siteId: parent.attr( 'website-id' ),
-		}
+                var data = {
+                        action: 'mainwp_linkschecker_upgrade_noti_dismiss',
+                        siteId: parent.attr( 'website-id' ),
+                        security: mainwp_linkschecker.nonce
+                }
 		jQuery.post(ajaxurl, data, function (response) {
 
 		});
@@ -31,10 +32,11 @@ jQuery( document ).ready(function($) {
 	  $( '.mwp-linkschecker-invalid-noti-dismiss' ).live('click', function() {
 		  var parent = $( this ).closest( '.ext-invalid-noti' );
 		  parent.hide();
-		  var data = {
-				action: 'mainwp_linkschecker_invalid_noti_dismiss',
-				siteId: parent.attr( 'website-id' )
-			}
+                  var data = {
+                                action: 'mainwp_linkschecker_invalid_noti_dismiss',
+                                siteId: parent.attr( 'website-id' ),
+                                security: mainwp_linkschecker.nonce
+                        }
 			jQuery.post(ajaxurl, data, function (response) {
 
 			});
@@ -70,11 +72,12 @@ jQuery( document ).ready(function($) {
 				return false;
 			}
 
-			var data = {
-				action: 'mainwp_linkschecker_settings_loading_sites',
-				check_threshold: $( '#check_threshold' ).val(),
-				max_number_of_links: $( '#max_number_of_links' ).val()
-			}
+                        var data = {
+                                action: 'mainwp_linkschecker_settings_loading_sites',
+                                check_threshold: $( '#check_threshold' ).val(),
+                                max_number_of_links: $( '#max_number_of_links' ).val(),
+                                security: mainwp_linkschecker.nonce
+                        }
 
       var me = $( this );
 
@@ -108,9 +111,10 @@ jQuery( document ).ready(function($) {
 
 		$( '#mwp-blc-start-recheck-btn' ).on('click', function() {
 
-			var data = {
-				action: 'mainwp_linkschecker_settings_recheck_loading'
-			}
+                        var data = {
+                                action: 'mainwp_linkschecker_settings_recheck_loading',
+                                security: mainwp_linkschecker.nonce
+                        }
 
 			var me = $( this );
 
@@ -165,7 +169,8 @@ jQuery( document ).ready(function($) {
 
       var data = {
         action: 'mainwp_linkschecker_load_sites',
-        siteids: selected_ids
+        siteids: selected_ids,
+        security: mainwp_linkschecker.nonce
       }
 
       var me = $( this );
@@ -244,11 +249,12 @@ mainwp_linkschecker_showhide_start_specific = function(pObj, bulk, selector) {
 		linkschecker_bulkCurrentThreads++;
   }
 
-	var data = {
-		action: 'mainwp_linkschecker_showhide_linkschecker',
-		websiteId: parent.attr( 'website-id' ),
-		showhide: showhide
-	}
+        var data = {
+                action: 'mainwp_linkschecker_showhide_linkschecker',
+                websiteId: parent.attr( 'website-id' ),
+                showhide: showhide,
+                security: mainwp_linkschecker.nonce
+        }
 
   statusEl.html( '<i class="notched circle loading icon"></i>' );
 
@@ -298,12 +304,13 @@ mainwp_linkschecker_upgrade_start_specific = function(pObj, bulk, selector) {
 	var parent = pObj.closest( 'tr' );
 	var workingRow = parent.find( '.status' );
 	var slug = parent.attr( 'plugin-slug' );
-	var data = {
-		action: 'mainwp_linkschecker_upgrade_plugin',
-		websiteId: parent.attr( 'website-id' ),
-		type: 'plugin',
-		'slugs[]': [slug]
-	}
+        var data = {
+                action: 'mainwp_linkschecker_upgrade_plugin',
+                websiteId: parent.attr( 'website-id' ),
+                type: 'plugin',
+                'slugs[]': [slug],
+                security: mainwp_linkschecker.nonce
+        }
 
 	if (bulk) {
 		linkschecker_bulkCurrentThreads++; }
@@ -346,11 +353,12 @@ mainwp_linkschecker_active_start_specific = function(pObj, bulk, selector) {
 	var parent = pObj.closest( 'tr' );
 	var workingRow = parent.find( '.status' );
 	var slug = parent.attr( 'plugin-slug' );
-	var data = {
-		action: 'mainwp_linkschecker_active_plugin',
-		websiteId: parent.attr( 'website-id' ),
-		'plugins[]': [slug]
-	}
+        var data = {
+                action: 'mainwp_linkschecker_active_plugin',
+                websiteId: parent.attr( 'website-id' ),
+                'plugins[]': [slug],
+                security: mainwp_linkschecker.nonce
+        }
 
 	if (bulk) {
 		linkschecker_bulkCurrentThreads++; }
@@ -390,10 +398,11 @@ mainwp_linkschecker_save_settings_start_specific = function (pSiteToProcess) {
 	pSiteToProcess.attr( 'status', 'progress' );
 	var statusEl = pSiteToProcess.find( '.status' ).html( '<i class="notched circle loading icon"></i>' );
 
-	var data = {
-		action:'mainwp_linkschecker_performsavelinkscheckersettings',
-		siteId: pSiteToProcess.attr( 'siteid' ),
-	};
+        var data = {
+                action:'mainwp_linkschecker_performsavelinkscheckersettings',
+                siteId: pSiteToProcess.attr( 'siteid' ),
+                security: mainwp_linkschecker.nonce
+        };
         var $container = jQuery( '#blc_settings_tab .postbox .inside' );
 	jQuery.post(ajaxurl, data, function (response)
 		{
@@ -437,10 +446,11 @@ mainwp_linkschecker_settings_recheck_start_specific = function (pSiteToProcess)
 	pSiteToProcess.attr( 'status', 'progress' );
 	var statusEl = pSiteToProcess.find( '.status' ).html( '<i class="notched circle loading icon"></i>' );
 
-	var data = {
-		action:'mainwp_linkschecker_perform_recheck',
-		siteId: pSiteToProcess.attr( 'siteid' )
-	};
+        var data = {
+                action:'mainwp_linkschecker_perform_recheck',
+                siteId: pSiteToProcess.attr( 'siteid' ),
+                security: mainwp_linkschecker.nonce
+        };
 
 	jQuery.post(ajaxurl, data, function (response)
 		{
@@ -490,10 +500,11 @@ mainwp_linkschecker_sync_links_start_specific = function (pSiteToProcess, offset
 
 	var statusEl = pSiteToProcess.find( '.status' ).html( '<i class="notched circle loading icon"></i>' + ( offset_num > 0 ? offset_num : '') );
   var data = {
-		action:'mainwp_linkschecker_sync_links_data',
-		siteId: pSiteToProcess.attr( 'siteid' ),
-    first_sync: first_sync
-	};
+                action:'mainwp_linkschecker_sync_links_data',
+                siteId: pSiteToProcess.attr( 'siteid' ),
+    first_sync: first_sync,
+    security: mainwp_linkschecker.nonce
+        };
 
         if (offset_num > 0) {
              data['offset'] = offset_num;

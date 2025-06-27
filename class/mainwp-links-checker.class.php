@@ -185,10 +185,15 @@ class MainWP_Links_Checker
 		return $actions;
 	}
 
-	function ajax_sync_links_data() {
-		$website_id = $_POST['siteId'];
-		$offset = isset($_POST['offset']) ? $_POST['offset'] : 0;
-		$first_sync = isset($_POST['first_sync']) && !empty($_POST['first_sync']) ? 1 : 0;
+        function ajax_sync_links_data() {
+                if ( ! current_user_can( 'manage_options' ) ) {
+                        wp_send_json( array( 'error' => __( 'You\'re not allowed to do that!', 'mainwp-broken-links-checker-extension' ) ) );
+                }
+                check_ajax_referer( 'mainwp_blc_nonce', 'security' );
+
+                $website_id = isset( $_POST['siteId'] ) ? intval( $_POST['siteId'] ) : 0;
+                $offset     = isset( $_POST['offset'] ) ? intval( $_POST['offset'] ) : 0;
+                $first_sync = isset( $_POST['first_sync'] ) && ! empty( $_POST['first_sync'] ) ? 1 : 0;
 
 		if ( empty( $website_id ) ) {
 			die( json_encode( array( 'error' => 'Error: site id empty' ) ) );
@@ -416,9 +421,14 @@ class MainWP_Links_Checker
 		die();
 	}
 
-	function ajax_settings_loading_sites() {
+        function ajax_settings_loading_sites() {
 
-		$check_threshold = intval( $_POST['check_threshold'] );
+                if ( ! current_user_can( 'manage_options' ) ) {
+                        wp_send_json( array( 'error' => __( "You're not allowed to do that!", 'mainwp-broken-links-checker-extension' ) ) );
+                }
+                check_ajax_referer( 'mainwp_blc_nonce', 'security' );
+
+                $check_threshold = intval( $_POST['check_threshold'] );
 		if ( $check_threshold <= 0 ) {
 			die( json_encode( array( 'error' => __( 'Every hour value can not be empty.', 'mainwp-broken-links-checker-extension' ) ) ) );
 		} else {
@@ -429,13 +439,21 @@ class MainWP_Links_Checker
 
 	}
 
-	function ajax_settings_recheck_loading() {
-		$this->do_load_sites('recheck');
-	}
+        function ajax_settings_recheck_loading() {
+                if ( ! current_user_can( 'manage_options' ) ) {
+                        wp_send_json( array( 'error' => __( "You're not allowed to do that!", 'mainwp-broken-links-checker-extension' ) ) );
+                }
+                check_ajax_referer( 'mainwp_blc_nonce', 'security' );
+                $this->do_load_sites('recheck');
+        }
 
-	function ajax_sync_load_sites() {
-		$this->do_load_sites( 'sync' , true, true );
-	}
+        function ajax_sync_load_sites() {
+                if ( ! current_user_can( 'manage_options' ) ) {
+                        wp_send_json( array( 'error' => __( "You're not allowed to do that!", 'mainwp-broken-links-checker-extension' ) ) );
+                }
+                check_ajax_referer( 'mainwp_blc_nonce', 'security' );
+                $this->do_load_sites( 'sync' , true, true );
+        }
 
 	function do_load_sites( $what = 'save_settings',  $with_postbox = false, $check_site_ids = false) {
 		global $mainWPLinksCheckerExtensionActivator;
@@ -500,11 +518,16 @@ class MainWP_Links_Checker
 
 	}
 
-	public function ajax_settings_perform_save() {
-		$siteid = $_POST['siteId'];
-		if ( empty( $siteid ) ) {
-			die( json_encode( array( 'error' => 'Error: site id empty' ) ) );
-		}
+       public function ajax_settings_perform_save() {
+                if ( ! current_user_can( 'manage_options' ) ) {
+                        wp_send_json( array( 'error' => __( "You're not allowed to do that!", 'mainwp-broken-links-checker-extension' ) ) );
+                }
+                check_ajax_referer( 'mainwp_blc_nonce', 'security' );
+
+                $siteid = isset( $_POST['siteId'] ) ? intval( $_POST['siteId'] ) : 0;
+                if ( empty( $siteid ) ) {
+                        die( json_encode( array( 'error' => 'Error: site id empty' ) ) );
+                }
 		$information = $this->perform_save_settings($siteid);
 		die( json_encode( $information ) );
 	}
@@ -537,9 +560,14 @@ class MainWP_Links_Checker
 		return $information;
 	}
 
-	public function ajax_perform_recheck() {
+       public function ajax_perform_recheck() {
 
-		$siteid = $_POST['siteId'];
+                if ( ! current_user_can( 'manage_options' ) ) {
+                        wp_send_json( array( 'error' => __( "You're not allowed to do that!", 'mainwp-broken-links-checker-extension' ) ) );
+                }
+                check_ajax_referer( 'mainwp_blc_nonce', 'security' );
+
+                $siteid = isset( $_POST['siteId'] ) ? intval( $_POST['siteId'] ) : 0;
 
 		if ( empty( $siteid ) ) {
 			die( json_encode( array( 'error' => 'Error: site id empty' ) ) ); }
